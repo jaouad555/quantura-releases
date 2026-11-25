@@ -1,0 +1,27 @@
+QUANTURA — PROPRIETARY SOFTWARE & LICENSE AGREEMENT
+
+Copyright (c) 2026 JAOUAD ABDECHCHAFI. All Rights Reserved.
+
+Quantura is proprietary software. All rights are reserved by the copyright holder.
+
+### 1. License Requirement
+Access to the software does not grant the right to operate it. Operation of the Quantura software is strictly contingent upon the possession of a valid, authorized License Key issued and signed by the copyright holder. 
+
+- The software contains a built-in verification mechanism (using Ed25519 digital signatures) that validates this License Key against an embedded Public Key.
+- Any attempt to bypass, tamper with, or circumvent this verification process is a violation of this agreement and is strictly prohibited.
+
+### 2. Usage Restrictions
+No permission is granted to any person or entity to:
+- Copy, reproduce, redistribute, or reverse-engineer this software.
+- Modify, adapt, or create derivative works.
+- Sell, sublicense, rent, or commercially exploit the software without explicit authorization.
+- Use the source code, algorithms, or components to build competitive products.
+
+### 3. Unauthorized Use
+Any unauthorized use, reproduction, modification, distribution, or commercial exploitation—including the use of unauthorized or falsified license keys—is strictly prohibited and subject to legal prosecution.
+
+### 4. Warranty Disclaimer
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW.
+
+Copyright (c) 2026 JAOUAD ABDECHCHAFI
+All Rights Reserved.

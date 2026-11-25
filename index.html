@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quantura™ v2.5.0 — Official Documentation &amp; VPS Deployment Manual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Syncopate:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #020617;
+      --surface: #0b1120;
+      --panel: #0f172a;
+      --border: #1e293b;
+      --cyan: #22d3ee;
+      --emerald: #34d399;
+      --amber: #fbbf24;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 28px 16px;
+    }
+    .layout {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .mobile-nav {
+      display: none;
+      margin-bottom: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+    .mobile-nav label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+      margin-bottom: 8px;
+    }
+    .mobile-nav select {
+      width: 100%;
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static !important; }
+      .mobile-nav { display: block; }
+    }
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .sidebar h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      margin-bottom: 12px;
+    }
+    .sidebar a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: background 0.15s, color 0.15s;
+      border: 1px solid transparent;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: var(--panel);
+      color: var(--text);
+      border-color: rgba(34, 211, 238, 0.25);
+    }
+    .sidebar a.active {
+      color: var(--cyan);
+    }
+    .sidebar-divider {
+      border-top: 1px solid var(--border);
+      margin: 14px 0;
+    }
+    .wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+    }
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 22px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .title-group h1 {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 24px;
+      letter-spacing: 0.14em;
+      color: #fff;
+    }
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--cyan);
+      margin-top: 4px;
+    }
+    h2 {
+      font-size: 19px;
+      color: var(--cyan);
+      margin: 34px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      scroll-margin-top: 24px;
+    }
+    h3 {
+      font-size: 15.5px;
+      color: #fff;
+      margin: 20px 0 8px;
+    }
+    p, li { color: var(--muted); font-size: 14px; }
+    ul, ol { margin-left: 20px; margin-bottom: 14px; }
+    li { margin-bottom: 7px; }
+    strong { color: var(--text); }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      color: #38bdf8;
+    }
+    pre {
+      background: #030712;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 12.5px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    .highlight-box {
+      background: rgba(34, 211, 238, 0.06);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin: 18px 0;
+    }
+    .highlight-box strong { color: var(--cyan); }
+    .security-box {
+      background: rgba(251, 191, 36, 0.06);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin: 18px 0;
+    }
+    .security-box strong { color: var(--amber); }
+    .table-container { overflow-x: auto; margin: 16px 0; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      font-variant-numeric: tabular-nums;
+    }
+    th {
+      background: var(--panel);
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .contact-card {
+      background: #030712;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.15s;
+    }
+    .contact-card:hover { border-color: var(--cyan); }
+    .contact-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      text-transform: uppercase;
+    }
+    .contact-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #fff;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+    .footer {
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+      padding-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-nav">
+    <label for="mobileSectionSelect">Jump to Section</label>
+    <select id="mobileSectionSelect">
+      <option value="#overview">1. Architecture &amp; Features</option>
+      <option value="#strategies-risk">2. 12 Strategies &amp; Risk Engine</option>
+      <option value="#strategy-matrix">3. 12-Strategy Reference Matrix</option>
+      <option value="#telegram-dual">4. Telegram Dual Publishing</option>
+      <option value="#prerequisites">5. System Prerequisites</option>
+      <option value="#vps-install">6. VPS Deployment</option>
+      <option value="#nginx-ssl">7. Nginx &amp; SSL</option>
+      <option value="#binance-api">8. Binance API &amp; Modes</option>
+      <option value="#security-2fa">9. Auth &amp; Smart 2FA</option>
+      <option value="#licensing-ed25519">10. Ed25519 Licensing &amp; Builds</option>
+      <option value="#maintenance">11. Maintenance &amp; Tests</option>
+      <option value="#support">12. Official Support</option>
+    </select>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar" id="docSidebar">
+      <h4>Contents</h4>
+      <a href="#overview" class="active">1. Architecture &amp; Features</a>
+      <a href="#strategies-risk">2. 12 Strategies &amp; 1R ROE</a>
+      <a href="#strategy-matrix">3. Strategy Matrix (12)</a>
+      <a href="#telegram-dual">4. Telegram Dual Publishing</a>
+      <a href="#prerequisites">5. System Prerequisites</a>
+      <a href="#vps-install">6. VPS Deployment</a>
+      <a href="#nginx-ssl">7. Nginx &amp; SSL</a>
+      <a href="#binance-api">8. Binance API &amp; Modes</a>
+      <a href="#security-2fa">9. Auth &amp; Smart 2FA</a>
+      <a href="#licensing-ed25519">10. Ed25519 Licensing</a>
+      <a href="#maintenance">11. Maintenance &amp; Tests</a>
+      <a href="#support">12. Official Support</a>
+      <div class="sidebar-divider"></div>
+      <h4>Other Manuals</h4>
+      <a href="/Quantura_Documentation.html">Arabic Manual (HTML)</a>
+      <a href="/INSTALLATION.md">Markdown Install Guide</a>
+      <a href="/README.md">Project README</a>
+    </aside>
+
+    <main class="wrapper">
+      <div class="header">
+        <div class="title-group">
+          <h1>QUANTURA™</h1>
+          <div class="subtitle">v2.5.0 · Institutional Quantitative Trading Terminal</div>
+        </div>
+        <span style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;">
+          Buyer Documentation &amp; VPS Manual
+        </span>
+      </div>
+
+      <div class="highlight-box">
+        <strong>Private Single-Owner Server &amp; Security Provisioning:</strong><br />
+        • Public user registration is permanently disabled in both the UI and server boundary (<code>403 Forbidden</code> on <code>/api/auth/register</code>).<br />
+        • Configure <code>SESSION_SECRET</code>, <code>ADMIN_USERNAME</code>, <code>ADMIN_PASSWORD</code>, and <code>ADMIN_EMAIL</code> inside <code>.env</code> prior to initial launch.<br />
+        • Passwords and fallback Master PINs use PBKDF2-SHA512 salted hashes, backed by HMAC-SHA256 signed sessions, progressive brute-force cooldowns, and server-enforced Smart 2FA.
+      </div>
+
+      <h2 id="overview">1. Architecture &amp; Core Features</h2>
+      <p><strong>Quantura™</strong> is a full-stack autonomous trading terminal supporting <strong>Binance Spot (1x)</strong> and <strong>USDT-M Perpetual Futures (1x–50x)</strong> across <strong>30 monitored pairs</strong> with strict architectural isolation across markets and execution modes.</p>
+
+      <div class="card">
+        <h3>Strict Market &amp; Execution Mode Isolation</h3>
+        <ul>
+          <li><strong>Spot vs. USDT-M Futures:</strong> Dedicated equations, fee structures, leverage rules (<code>1x</code> Long-only Spot vs. <code>1x–50x</code> Long/Short Futures), and segregated balance ledgers.</li>
+          <li><strong>Paper · Testnet · Live Separation:</strong> Active positions, trade histories, risk scopes, and execution logs remain strictly isolated across <code>PAPER</code>, <code>BINANCE_TESTNET</code>, and <code>BINANCE_LIVE</code>.</li>
+          <li><strong>30 Monitored Market Pairs:</strong> Real-time WebSocket tickers (<code>binanceWebSocket.ts</code>) + live User Data Stream fills (<code>binanceUserStream.ts</code>) paired with cached multi-timeframe REST klines, order-book imbalance, and futures derivatives telemetry.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>5 Institutional Execution, Quant Validation &amp; Persistence Phases</h3>
+        <ul>
+          <li><strong>Phase 1 — Differential Sync &amp; Relational Trade DB:</strong> <code>robustSyncEngine.ts</code> compares structural position signatures (ignoring pure mark-to-market noise) to reduce DB overhead, paired with PostgreSQL relational persistence (<code>tradeDb.ts</code> + Prisma) and WAL recovery.</li>
+          <li><strong>Phase 2 — Live Exchange Sync &amp; Idempotent Manager:</strong> <code>binanceWebSocket.ts</code> + <code>binanceUserStream.ts</code> + <code>liveOrderManager.ts</code> enforce deterministic <code>clientOrderId</code> idempotency and instant order/fill sync.</li>
+          <li><strong>Phase 3 — Smart Order Router &amp; TCA:</strong> <code>smartOrderRouter.ts</code> optimizes maker/limit/market routing with live Transaction Cost Analysis (<code>TCA</code>).</li>
+          <li><strong>Phase 4 — Institutional Flow, Correlation &amp; Blackout Guard:</strong> Scores institutional order flow (<code>institutionalFlow.ts</code>), caps correlated clusters (<code>RollingCorrelation.ts</code>), and blocks entries during macro news blackouts (<code>EventBlackoutGuard.ts</code>).</li>
+          <li><strong>Phase 5 — Monte Carlo, Walk-Forward, Multi-Venue Hedge &amp; CORTEX AI:</strong> Validates strategies statistically out-of-sample, monitors cross-venue hedges (<code>multiVenueHedging.ts</code>), and pairs econometric ROC-AUC / Half-Kelly scoring with the post-trade Autopsy Room.</li>
+        </ul>
+      </div>
+
+      <h2 id="strategies-risk">2. 12 Specialized Strategies, 1R Profit Protection &amp; Risk Engine</h2>
+      <div class="card">
+        <h3>Unrestricted Strategy Selection (0–12) &amp; Specialized Scanning</h3>
+        <ul>
+          <li><strong>12 Quantitative Strategies:</strong> <code>LIQUIDITY_HUNT</code> (15m), <code>MTF_CONFLUENCE</code> (15m), <code>MEAN_REVERSION</code> (15m), <code>SCALPER</code> (15m), <code>VWAP_VOLUME_DELTA</code> (30m), <code>BREAKOUT</code> (30m), <code>SESSION_ORB_BREAKOUT</code> (30m), <code>INSTITUTIONAL_SMC</code> (1h), <code>MOMENTUM_TREND_PRO</code> (1h), <code>FUNDING_SQUEEZE</code> (1h), <code>ORDER_BLOCK_DISPLACEMENT</code> (1h), and <code>SWING</code> (4h).</li>
+          <li><strong>Full User Freedom (0–12):</strong> Arm 1, 2, 3, or all 12 strategies freely with zero forced minimum strategy locks.</li>
+          <li><strong>Per-Strategy Specialized Scanning (<code>AUTO</code> Mode):</strong> Each active strategy evaluates symbols on its own specialized timeframe, and valid candidates are ranked by Confidence and Risk/Reward.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Liquidity Sweep Entries &amp; 1R-Aligned Profit Protection</h3>
+        <ul>
+          <li><strong>Stop-Hunt Sweep &amp; Anti-Chase Gate:</strong> Detects 3-candle liquidity sweeps with wick-rejection &amp; reclaim confirmation while blocking extended entries beyond <code>1.45× ATR</code> from EMA20 (<code>1.60×</code> Breakout, <code>1.85×</code> confirmed sweep reclaim).</li>
+          <li><strong>Bounded Structural Stop Loss:</strong> Tight post-sweep structural SL (<code>1.25×–2.35× ATR</code>, up to <code>2.8× ATR</code> Swing, min <code>0.8%–0.9%</code>) paired with <code>TP1 ≥ 2.05× Risk</code>.</li>
+          <li><strong><code>1.0R</code> Trailing &amp; <code>35%</code> Early Secure:</strong> <code>RoeEngine</code> waits for <code>>= 1.0R</code> and <code>>= 6.0%</code> Net ROE before arming <code>ATR_DYNAMIC</code> trailing; Early Secure locks <code>35%</code> + fee-aware breakeven at <code>>= 1.15R</code> (<code>>= 5.0%</code> Futures / <code>>= 1.5%</code> Spot Net ROE).</li>
+          <li><strong>Risk Engine Scaling:</strong> Enforces <code>R:R >= 1:2.0</code>, correlation cluster limits, daily loss circuit breakers, and dynamic strategy risk budgets that scale cleanly for 1–2 strategy setups.</li>
+        </ul>
+      </div>
+
+      <h2 id="strategy-matrix">3. 12-Strategy Reference Matrix</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Canonical ID</th>
+              <th>Code</th>
+              <th>TF</th>
+              <th>Futures Lev</th>
+              <th>Min Conf</th>
+              <th>Core Edge</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>01</td><td><code>INSTITUTIONAL_SMC</code></td><td><code>SMC</code></td><td>1h</td><td>2x</td><td>75%</td><td>Order Blocks, Fair Value Gaps &amp; Liquidity Sweeps</td></tr>
+            <tr><td>02</td><td><code>MOMENTUM_TREND_PRO</code></td><td><code>MOM</code></td><td>1h</td><td>3x</td><td>85%</td><td>EMA50/200 Alignment, ADX ≥ 25 &amp; Volume Surge</td></tr>
+            <tr><td>03</td><td><code>SWING</code></td><td><code>SWG</code></td><td>4h</td><td>2x</td><td>75%</td><td>4H Macro Trend Swings with Lowest Drawdown</td></tr>
+            <tr><td>04</td><td><code>MTF_CONFLUENCE</code></td><td><code>MTF</code></td><td>15m</td><td>3x</td><td>72%</td><td>Tri-Timeframe Agreement (4H + 1H + 15m)</td></tr>
+            <tr><td>05</td><td><code>VWAP_VOLUME_DELTA</code></td><td><code>VWAP</code></td><td>30m</td><td>3x</td><td>70%</td><td>VWAP Pullbacks &amp; Order Book Delta Imbalance</td></tr>
+            <tr><td>06</td><td><code>FUNDING_SQUEEZE</code></td><td><code>SQZ</code></td><td>1h</td><td>3x</td><td>75%</td><td>Short/Long Squeezes on Extreme Funding Bias</td></tr>
+            <tr><td>07</td><td><code>BREAKOUT</code></td><td><code>BRK</code></td><td>30m</td><td>4x</td><td>70%</td><td>Bollinger Squeeze Expansion &amp; Volume Breakouts</td></tr>
+            <tr><td>08</td><td><code>SCALPER</code></td><td><code>SCALP</code></td><td>15m</td><td>5x</td><td>60%</td><td>15m High-Frequency Pullbacks &amp; Rapid Trailing</td></tr>
+            <tr><td>09</td><td><code>MEAN_REVERSION</code></td><td><code>REV</code></td><td>15m</td><td>3x</td><td>68%</td><td>Rebounds from RSI/Bollinger Extremes (ADX &lt; 24)</td></tr>
+            <tr><td>10</td><td><code>LIQUIDITY_HUNT</code></td><td><code>HUNT</code></td><td>15m</td><td>3x</td><td>75%</td><td>Stop-Hunt Sweeps &amp; Fakeout Traps with Absorption</td></tr>
+            <tr><td>11</td><td><code>ORDER_BLOCK_DISPLACEMENT</code></td><td><code>OB-FVG</code></td><td>1h</td><td>3x</td><td>75%</td><td>Impulsive Displacement + OB/FVG Mitigation Pullbacks</td></tr>
+            <tr><td>12</td><td><code>SESSION_ORB_BREAKOUT</code></td><td><code>ORB-PRO</code></td><td>30m</td><td>3x</td><td>74%</td><td>Institutional Range Breakout with Volume &amp; +DI/-DI</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="telegram-dual">4. Telegram Dual Publishing &amp; Paper Transparency</h2>
+      <div class="card">
+        <h3>Private Bot Commands + Official Public Channel</h3>
+        <ul>
+          <li><strong>Interactive Private Bot (<code>TELEGRAM_CHAT_ID</code>):</strong> Supports <code>/status</code>, <code>/balance</code>, <code>/positions</code>, <code>/scanner</code>, <code>/signals</code>, <code>/cortex</code>, <code>/autopsy</code>, <code>/start_bot</code>, and <code>/stop_bot</code> in Arabic, English, and French.</li>
+          <li><strong>Official Channel Broadcaster (<code>TELEGRAM_CHANNEL_ID</code>):</strong> Add your bot as a Channel Administrator with <em>Post Messages</em> permission and configure <code>TELEGRAM_CHANNEL_ID</code> (<code>@ChannelUsername</code> or <code>-100...</code>) in <code>.env</code> or Settings.</li>
+          <li><strong>Strict Paper Simulation Identity:</strong> Publishes verified Paper Trading events (<code>PAPER SIGNAL GENERATED</code>, <code>PAPER TRADE OPENED/UPDATED</code>, <code>PAPER EARLY SECURE</code>, <code>PAPER TP1/TP2/TP3</code>, <code>PAPER STOP LOSS</code>, <code>PAPER TRADE CLOSED</code>, and <code>DAILY PAPER PERFORMANCE REPORT</code>) branded as <em>QUANTURA 🐺 THE PATIENT WOLF — PAPER TRADING PERFORMANCE</em> with explicit non-live simulation disclosures.</li>
+        </ul>
+      </div>
+
+      <h2 id="prerequisites">5. System Prerequisites</h2>
+      <ul>
+        <li><strong>OS:</strong> Debian 12 (Bookworm) or Ubuntu 22.04 / 24.04 LTS</li>
+        <li><strong>Compute:</strong> 2+ vCPUs, 2+ GB RAM, 15 GB SSD</li>
+        <li><strong>Runtime &amp; DB:</strong> Node.js v20+ (v22 LTS recommended) &amp; PostgreSQL 16+</li>
+        <li><strong>Ports:</strong> <code>22</code> (SSH), <code>80</code> (HTTP), <code>443</code> (HTTPS)</li>
+      </ul>
+
+      <h2 id="vps-install">6. VPS Deployment (Ubuntu / Debian)</h2>
+      <h3>Step 1: System Dependencies &amp; PostgreSQL</h3>
+      <pre><code>sudo apt update &amp;&amp; sudo apt upgrade -y
+sudo apt install -y curl wget git build-essential ufw unzip nginx certbot python3-certbot-nginx postgresql postgresql-contrib</code></pre>
+
+      <h3>Step 2: Create PostgreSQL Database</h3>
+      <pre><code>sudo -u postgres psql
+CREATE DATABASE quantura;
+CREATE USER quantura_user WITH ENCRYPTED PASSWORD 'your_strong_password';
+GRANT ALL PRIVILEGES ON DATABASE quantura TO quantura_user;
+\c quantura
+GRANT ALL ON SCHEMA public TO quantura_user;
+\q</code></pre>
+
+      <h3>Step 3: Install Node.js 22 LTS &amp; PM2</h3>
+      <pre><code>curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
+sudo npm install -g pm2</code></pre>
+
+      <h3>Step 4: Clone Public Repo or Extract Protected Package</h3>
+      <pre><code># Method A: Public GitHub Repository (Source Build)
+sudo mkdir -p /var/www/quantura &amp;&amp; sudo chown -R $USER:$USER /var/www/quantura
+git clone https://github.com/your-org/quantura.git /var/www/quantura
+cd /var/www/quantura
+
+# Method B: Pre-Built Protected Release (release-protected.zip)
+unzip quantura-protected-release.zip
+
+cp .env.example .env
+nano .env</code></pre>
+      <pre><code>PORT=3000
+DATABASE_URL="postgresql://quantura_user:your_strong_password@localhost:5432/quantura"
+SESSION_SECRET="replace_with_random_64_char_session_secret"
+JWT_SECRET="replace_with_random_64_char_secret"
+ENCRYPTION_KEY="replace_with_32_character_key"
+ADMIN_USERNAME="admin"
+ADMIN_PASSWORD="set_strong_admin_password"
+ADMIN_EMAIL="admin@yourdomain.com"
+QUANTURA_LICENSE_KEY="YOUR_LICENSE_KEY"
+LICENSE_SERVER_URL="https://quanturalicense.myvnc.com"
+LICENSE_PUBLIC_KEY=""
+STRICT_LICENSE_SIGNATURE="false"
+QUANTURA_COMMERCIAL_BUILD="true"
+GEMINI_API_KEY="your_gemini_api_key"
+TELEGRAM_BOT_TOKEN=""
+TELEGRAM_CHAT_ID=""
+TELEGRAM_CHANNEL_ID=""</code></pre>
+
+      <h3>Step 5: Install, Migrate &amp; Launch</h3>
+      <pre><code># Method A (From Public GitHub Source):
+npm install
+npx prisma generate
+npx prisma migrate deploy
+npm run build
+pm2 start npm --name "quantura" -- start
+
+# Method B (From Protected Pre-Built Package release-protected/ — no npm run build needed):
+npm install --omit=dev
+npx prisma generate
+npx prisma migrate deploy
+pm2 start npm --name "quantura" -- start
+pm2 save &amp;&amp; pm2 startup</code></pre>
+
+      <h2 id="nginx-ssl">7. Nginx WebSocket Reverse Proxy &amp; SSL</h2>
+      <pre><code>server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 86400s;
+        proxy_send_timeout 86400s;
+    }
+}</code></pre>
+      <pre><code>sudo ln -s /etc/nginx/sites-available/quantura /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx
+sudo certbot --nginx -d your-domain.com
+sudo ufw allow 22/tcp &amp;&amp; sudo ufw allow 80/tcp &amp;&amp; sudo ufw allow 443/tcp &amp;&amp; sudo ufw enable</code></pre>
+
+      <h2 id="binance-api">8. Connecting Binance API (Spot / Futures · Testnet / Live)</h2>
+      <ol>
+        <li>Generate API keys from Binance Mainnet or Testnet (<code>testnet.binance.vision</code> / <code>testnet.binancefuture.com</code>).</li>
+        <li>Enable only <strong>Spot &amp; Margin Trading</strong> and/or <strong>Futures</strong>. Keep <strong>Withdrawals disabled</strong>.</li>
+        <li>Open Quantura's <strong>Binance API Setup Modal</strong>, copy your outbound VPS IP address, and whitelist it inside Binance API IP restrictions.</li>
+        <li>Select the exact Market (<code>SPOT</code> or <code>FUTURES</code>) and Network (<code>Testnet</code> or <code>Live</code>), paste keys, verify connection, and save.</li>
+      </ol>
+
+      <h2 id="security-2fa">9. Private Server Access &amp; Smart Adaptive 2FA</h2>
+      <div class="security-box">
+        <strong>Private Single-Owner Policy:</strong> Public sign-up is permanently blocked on the login screen and at <code>/api/auth/register</code>. Failed login or 2FA verification attempts trigger progressive cooldown lockouts automatically.
+      </div>
+      <ol>
+        <li>Sign in immediately via the zero-lag <strong>Owner Sign In</strong> console using your configured owner credentials.</li>
+        <li>If using an initial bootstrap password, rotate it immediately and scan the QR code with <strong>Google Authenticator</strong> or <strong>Authy</strong> to issue your <strong>8 salted one-time emergency recovery codes (<code>QNT-XXXX-XXXX</code>)</strong>.</li>
+        <li>At login verification, use the auto-submitting 6-box OTP input (Authenticator TOTP or 6-digit Master PIN) or a one-time recovery code, and optionally trust your workstation for 30 days.</li>
+        <li>Manage <strong>Strict 2FA Always</strong> (zero device bypass), active <strong>Trusted Devices</strong> revocation, <strong>Recovery Code regeneration</strong>, and <strong>Master PIN</strong> hashing anytime inside <strong>Settings → Security &amp; 2FA</strong>.</li>
+      </ol>
+
+      <h2 id="licensing-ed25519">10. Ed25519 License Server Integration &amp; Protected Builds</h2>
+      <div class="card">
+        <h3>License-Only Commercial Distribution &amp; Signature Verification</h3>
+        <ul>
+          <li><strong>Asymmetric Ed25519 Signing (<code>npm run license:keygen</code>):</strong> Generates <code>keys/license_private.pem</code> (kept strictly on your License Server to sign <code>POST /api/v1/license/verify</code> payloads) and <code>keys/license_public.pem</code> (for client verification).</li>
+          <li><strong>Protected Release Package (<code>npm run build:dist-protected</code>):</strong> Builds Vite frontend, compiles <code>server.ts</code> with <code>DEFAULT_ACTIVE_LICENSE</code> stripped at compile time, obfuscates <code>dist/server.cjs</code>, embeds the Ed25519 public key, and emits a clean source-free package inside <code>release-protected/</code>.</li>
+          <li><strong>Strict Signature Mode (<code>--strict-signature</code>):</strong> Pass <code>-- --strict-signature</code> or set <code>STRICT_LICENSE_SIGNATURE=true</code> once your License Server attaches signed Ed25519 envelopes to reject unsigned or spoofed responses.</li>
+          <li><strong>Hardware Sealing &amp; Denial Enforcement:</strong> Seals <code>.quantura_certificate.json</code> to the host <code>HWID</code> with a 72-hour outage grace window while rejecting tampered certificates and explicit server denials immediately.</li>
+        </ul>
+      </div>
+
+      <h2 id="maintenance">11. Maintenance, Testing &amp; Health Checks</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>pm2 logs quantura</code></td><td>Inspect live server &amp; bot execution logs</td></tr>
+            <tr><td><code>pm2 restart quantura</code></td><td>Restart backend &amp; trading worker cleanly</td></tr>
+            <tr><td><code>npm run build:dist-protected</code></td><td>Assemble obfuscated, source-free client release in <code>release-protected/</code></td></tr>
+            <tr><td><code>npm run lint</code></td><td>Verify TypeScript types across frontend and backend</td></tr>
+            <tr><td><code>npm test</code></td><td>Run authoritative trading &amp; reconciliation test suite (34/34)</td></tr>
+            <tr><td><code>npx tsx --test tests/licenseSecurity.test.ts</code></td><td>Verify Ed25519 signatures, tampering rejection, HWID binding &amp; commercial mode</td></tr>
+            <tr><td><code>npx tsx --test src/utils/privateAuth2FA.test.ts</code></td><td>Verify Private Server Auth, lockout, TOTP, recovery codes, PIN &amp; trusted devices</td></tr>
+            <tr><td><code>npx tsx --test src/utils/institutionalUpgrades.test.ts</code></td><td>Verify MTM sync, SOR/TCA, correlation, blackout guard &amp; Monte Carlo</td></tr>
+            <tr><td><code>npx tsx tests/riskEngine.test.ts</code></td><td>Run Risk Engine validation suite (40 assertions)</td></tr>
+            <tr><td><code>npx tsx tests/entryEngine.test.ts</code></td><td>Run Entry Quality &amp; Anti-Chase suite (25 assertions)</td></tr>
+            <tr><td><code>npx tsx src/server/roeEngine/roeEngine.test.ts</code></td><td>Run ROE Engine profit protection suite (25 assertions)</td></tr>
+            <tr><td><code>curl -s http://localhost:3000/api/db/status</code></td><td>Verify PostgreSQL connection &amp; persisted trades</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="support">12. Official Direct Support &amp; Licensing</h2>
+      <p>For installation assistance, custom strategies, VPS deployment, or license upgrades &amp; HWID resets, reach our engineering support desk directly:</p>
+      <div class="contact-grid">
+        <a class="contact-card" href="mailto:jawman27227@gmail.com">
+          <div class="contact-label">Email Support</div>
+          <div class="contact-val">jawman27227@gmail.com</div>
+        </a>
+        <a class="contact-card" href="https://wa.me/212660323113" target="_blank" rel="noopener noreferrer">
+          <div class="contact-label">WhatsApp Direct</div>
+          <div class="contact-val">+212660323113</div>
+        </a>
+        <a class="contact-card" href="https://t.me/+212660323113" target="_blank" rel="noopener noreferrer">
+          <div class="contact-label">Telegram Direct</div>
+          <div class="contact-val">+212660323113</div>
+        </a>
+      </div>
+
+      <div class="footer">
+        &copy; 2026 Quantura™ v2.5.0 · Jaouad Abdechchafi · Institutional Quantitative Trading Terminal.
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('#docSidebar a[href^="#"]'));
+      var mobileSelect = document.getElementById('mobileSectionSelect');
+
+      function setActive(hash) {
+        links.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === hash);
+        });
+        if (mobileSelect && mobileSelect.value !== hash) {
+          mobileSelect.value = hash;
+        }
+      }
+
+      links.forEach(function (a) {
+        a.addEventListener('click', function () {
+          setActive(a.getAttribute('href'));
+        });
+      });
+
+      if (mobileSelect) {
+        mobileSelect.addEventListener('change', function () {
+          var targetId = mobileSelect.value;
+          var targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', targetId);
+            setActive(targetId);
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
