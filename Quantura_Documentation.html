@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة كوانتورا (Quantura™) — الدليل الشامل والتركيب على VPS وتفعيل Smart 2FA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #020617;
+      --surface-bg: #0b1120;
+      --card-bg: #0f172a;
+      --border-color: #1e293b;
+      --brand: #22d3ee;
+      --brand-glow: rgba(34, 211, 238, 0.14);
+      --emerald: #34d399;
+      --rose: #f43f5e;
+      --amber: #fbbf24;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.85;
+      padding: 24px 16px;
+    }
+
+    .page-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .sidebar-nav {
+      position: sticky;
+      top: 24px;
+      background: var(--surface-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .sidebar-nav h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--brand);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-nav a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 9px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: background 0.15s, color 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border-color: rgba(34, 211, 238, 0.25);
+    }
+
+    .sidebar-nav a.active {
+      color: var(--brand);
+    }
+
+    .sidebar-divider {
+      border-top: 1px solid var(--border-color);
+      margin: 14px 0;
+    }
+
+    .mobile-jump {
+      display: none;
+      max-width: 1180px;
+      margin: 0 auto 16px;
+      background: var(--surface-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .mobile-jump label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brand);
+      margin-bottom: 6px;
+    }
+
+    .mobile-jump select {
+      width: 100%;
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .page-shell {
+        grid-template-columns: 1fr;
+      }
+      .sidebar-nav {
+        position: static;
+      }
+      .mobile-jump {
+        display: block;
+      }
+    }
+
+    .container {
+      background: var(--surface-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      padding: 36px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 26px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .print-btn {
+      background: linear-gradient(135deg, #22d3ee, #0284c7);
+      color: #020617;
+      border: none;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 800;
+      font-family: 'Cairo', sans-serif;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.15s ease;
+    }
+
+    .print-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .hero-meta {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--brand);
+      margin: 34px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(34, 211, 238, 0.22);
+      scroll-margin-top: 24px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin: 20px 0 10px;
+    }
+
+    p, li {
+      color: var(--text-muted);
+      font-size: 14.5px;
+    }
+
+    ul, ol {
+      margin-right: 22px;
+      margin-bottom: 14px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    strong {
+      color: var(--text-main);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #030712;
+      border: 1px solid var(--border-color);
+      padding: 2px 7px;
+      border-radius: 6px;
+      color: #38bdf8;
+      font-size: 12.5px;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    pre {
+      background: #030712;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 12px 0;
+      direction: ltr;
+      text-align: left;
+    }
+
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #e2e8f0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 18px;
+    }
+
+    .highlight-box {
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin: 18px 0;
+    }
+
+    .security-box {
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin: 18px 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    th {
+      background: #030712;
+      color: var(--brand);
+      font-weight: 800;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border-color);
+      margin-top: 40px;
+      padding-top: 18px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    @media print {
+      .sidebar-nav, .mobile-jump, .print-btn { display: none !important; }
+      .page-shell { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-jump">
+    <label for="mobileArNav">الانتقال السريع إلى قسم:</label>
+    <select id="mobileArNav">
+      <option value="#sec-features">1. المميزات و 12 استراتيجية</option>
+      <option value="#sec-strategies">2. جدول الـ 12 استراتيجية</option>
+      <option value="#sec-phases">3. المراحل المؤسسية الخمس</option>
+      <option value="#sec-prereq">4. متطلبات السيرفر VPS</option>
+      <option value="#sec-install">5. خطوات التنصيب على VPS</option>
+      <option value="#sec-nginx">6. إعداد Nginx و SSL</option>
+      <option value="#sec-2fa">7. الخادم الخاص و Smart 2FA</option>
+      <option value="#sec-licensing">8. التراخيص و Ed25519 والنسخ المحمية</option>
+      <option value="#sec-maintenance">9. الصيانة والاختبارات</option>
+      <option value="#sec-support">10. الدعم الفني والتراخيص</option>
+    </select>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar-nav" id="arSidebarNav">
+      <h4>فهرس الدليل السريع</h4>
+      <a href="#sec-features" class="active">1. المميزات والأوضاع</a>
+      <a href="#sec-strategies">2. الـ 12 استراتيجية</a>
+      <a href="#sec-phases">3. المراحل المؤسسية الـ 5</a>
+      <a href="#sec-prereq">4. متطلبات السيرفر</a>
+      <a href="#sec-install">5. التنصيب على VPS</a>
+      <a href="#sec-nginx">6. Nginx و SSL</a>
+      <a href="#sec-2fa">7. السيرفر الخاص و 2FA</a>
+      <a href="#sec-licensing">8. التراخيص و Ed25519</a>
+      <a href="#sec-maintenance">9. الصيانة والاختبارات</a>
+      <a href="#sec-support">10. الدعم الفني</a>
+      <div class="sidebar-divider"></div>
+      <h4>مستندات إضافية</h4>
+      <a href="/documentation/index.html">English Manual (HTML)</a>
+      <a href="/INSTALLATION.md">INSTALLATION.md</a>
+      <a href="/README.md">README.md</a>
+    </aside>
+
+    <div class="container">
+      <div class="action-bar">
+        <div>
+          <span style="color: var(--text-muted); font-size: 13px;">دليل المشتري والتركيب الشامل · الإصدار v2.5.0</span>
+        </div>
+        <button class="print-btn" onclick="window.print()">
+          طباعة الدليل / حفظ PDF
+        </button>
+      </div>
+
+      <div class="hero">
+        <h1>منصة كوانتورا للتداول الخوارزمي Quantura™</h1>
+        <div class="hero-meta">الإصدار v2.5.0 · 12 استراتيجية كمية متخصصة · 5 مراحل تنفيذ مؤسسية · خادم خاص و Smart 2FA</div>
+      </div>
+
+      <div class="highlight-box">
+        <strong style="color: var(--brand);">سياسة الخادم الخاص والوصول الحصري للمالك (Private Single-Owner Server):</strong><br>
+        • تم تصميم كوانتورا كخادم خاص بمالك واحد؛ التسجيل العام للحسابات معطل نهائياً في واجهة الدخول وعلى مستوى الخادم (<code>403 Forbidden</code> على <code>/api/auth/register</code>).<br>
+        • اضبط متغيرات <code>SESSION_SECRET</code> و <code>ADMIN_USERNAME</code> و <code>ADMIN_PASSWORD</code> و <code>ADMIN_EMAIL</code> في ملف <code>.env</code> قبل التشغيل.<br>
+        • جميع كلمات المرور ورموز PIN مشفرة بـ PBKDF2-SHA512، والجلسات موقعة بـ HMAC-SHA256 مع حماية تلقائية ضد التخمين ومصادقة ثنائية ذكية على السيرفر.
+      </div>
+
+      <h2 id="sec-features">1. مميزات البوت والقدرات المؤسسية</h2>
+      <p>تُعد منصة كوانتورا (Quantura™) نظام تداول كمي وخوارزمي مؤسسي متكامل يعمل بشكل آلي 24/7 على أسواق <strong>Binance Spot (1x)</strong> و <strong>Binance USDT-M Futures (1x–50x)</strong> عبر 30 زوج تداول مع عزل تام بين أوضاع <strong>Paper</strong> و <strong>Testnet</strong> و <strong>Live</strong>:</p>
+
+      <div class="card">
+        <h3>12 استراتيجية كمية متخصصة + حرية الاختيار الكاملة (0–12)</h3>
+        <p style="margin-bottom: 12px;">يمتلك البوت <strong>12 استراتيجية كمية متخصصة</strong> مع حرية كاملة في تفعيل من <code>0</code> إلى <code>12</code> استراتيجية، وبوضع <code>AUTO</code> يفحص الماسح كل استراتيجية على إطارها الزمني المخصص مع فلتر مصائد السيولة ومنع المطاردة السعرية:</p>
+        <ul>
+          <li><strong>فريم 15m (4 استراتيجيات):</strong> <code>LIQUIDITY_HUNT</code> (مصائد السيولة)، <code>MTF_CONFLUENCE</code> (توافق الفريمات)، <code>MEAN_REVERSION</code> (الارتداد للمتوسط)، و<code>SCALPER</code> (سكالبينج دقيق).</li>
+          <li><strong>فريم 30m (3 استراتيجيات):</strong> <code>VWAP_VOLUME_DELTA</code> (ارتدادات VWAP + اختلال الدفتر)، <code>BREAKOUT</code> (اختراقات البولنجر)، و<code>SESSION_ORB_BREAKOUT</code> (اختراق النطاق المؤسسي).</li>
+          <li><strong>فريم 1h (4 استراتيجيات):</strong> <code>INSTITUTIONAL_SMC</code> (كتل الأوامر والفجوات)، <code>MOMENTUM_TREND_PRO</code> (الزخم والاتجاه المؤسسي)، <code>FUNDING_SQUEEZE</code> (ضغط التمويل)، و<code>ORDER_BLOCK_DISPLACEMENT</code> (كتل الأوامر والانزياح السعري).</li>
+          <li><strong>فريم 4h (استراتيجية واحدة):</strong> <code>SWING</code> (صفقات السوينغ متوسطة المدى).</li>
+        </ul>
+      </div>
+
+      <h2 id="sec-strategies">2. جدول الاستراتيجيات الـ 12 الكامل</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاستراتيجية (ID)</th>
+              <th>الرمز</th>
+              <th>الفريم</th>
+              <th>الرافعة</th>
+              <th>الحد الأدنى للثقة</th>
+              <th>التخصص الفني</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>01</td><td><code>INSTITUTIONAL_SMC</code></td><td><code>SMC</code></td><td>1h</td><td>2x</td><td>75%</td><td>كتل الأوامر والفجوات السعرية ومناطق السيولة</td></tr>
+            <tr><td>02</td><td><code>MOMENTUM_TREND_PRO</code></td><td><code>MOM</code></td><td>1h</td><td>3x</td><td>85%</td><td>ترتيب EMA50/200 وتسارع ADX ≥ 25 وحجم التداول</td></tr>
+            <tr><td>03</td><td><code>SWING</code></td><td><code>SWG</code></td><td>4h</td><td>2x</td><td>75%</td><td>الموجات المتوسطة والاتجاه الكلي بأقل تراجع</td></tr>
+            <tr><td>04</td><td><code>MTF_CONFLUENCE</code></td><td><code>MTF</code></td><td>15m</td><td>3x</td><td>72%</td><td>تطابق 3 فريمات (4H + 1H + 15m) بنسبة ≥ 72%</td></tr>
+            <tr><td>05</td><td><code>VWAP_VOLUME_DELTA</code></td><td><code>VWAP</code></td><td>30m</td><td>3x</td><td>70%</td><td>ارتدادات VWAP واختلال دفتر الأوامر المؤسسي</td></tr>
+            <tr><td>06</td><td><code>FUNDING_SQUEEZE</code></td><td><code>SQZ</code></td><td>1h</td><td>3x</td><td>75%</td><td>انفجارات الشورت/لونغ سكويز عند تطرف التمويل</td></tr>
+            <tr><td>07</td><td><code>BREAKOUT</code></td><td><code>BRK</code></td><td>30m</td><td>4x</td><td>70%</td><td>توسع البولنجر مع تدفق حجم تداول ≥ 1.2x</td></tr>
+            <tr><td>08</td><td><code>SCALPER</code></td><td><code>SCALP</code></td><td>15m</td><td>5x</td><td>60%</td><td>صفقات خاطفة دقيقة بوقف ضيق ووقف متحرك سريع</td></tr>
+            <tr><td>09</td><td><code>MEAN_REVERSION</code></td><td><code>REV</code></td><td>15m</td><td>3x</td><td>68%</td><td>ارتداد من تشبع RSI/Bollinger في السوق العرضي</td></tr>
+            <tr><td>10</td><td><code>LIQUIDITY_HUNT</code></td><td><code>HUNT</code></td><td>15m</td><td>3x</td><td>75%</td><td>اقتناص كنس الستوبات وامتصاص السيولة</td></tr>
+            <tr><td>11</td><td><code>ORDER_BLOCK_DISPLACEMENT</code></td><td><code>OB-FVG</code></td><td>1h</td><td>3x</td><td>75%</td><td>التخفيف على كتل الأوامر بعد انزياح سعري مؤسسي</td></tr>
+            <tr><td>12</td><td><code>SESSION_ORB_BREAKOUT</code></td><td><code>ORB-PRO</code></td><td>30m</td><td>3x</td><td>74%</td><td>اختراق نطاقات التذبذب بتأكيد الحجم و +DI/-DI</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="sec-phases">3. المراحل الخمس للتنفيذ المؤسسي والذكاء الاصطناعي</h2>
+      <div class="card">
+        <h3>المراحل الخمس لتأمين التنفيذ وتحليل المخاطر</h3>
+        <ul>
+          <li><strong>المرحلة 1 — المزامنة التفاضلية و PostgreSQL:</strong> محرك <code>robustSyncEngine</code> يقارن التوقيع البنيوي للصفقات (تجاهل ضجيج تقلبات الأسعار اللحظية) لتقليل الضغط على قاعدة البيانات مع حفظ علائقي في PostgreSQL (<code>tradeDb</code>) و Prisma.</li>
+          <li><strong>المرحلة 2 — البث الحي وإدارة الأوامر الحتمية:</strong> تدفق Binance WebSocket وبث المستخدم اللحظي (<code>binanceUserStream</code>) مع <code>liveOrderManager</code> لمنع تكرار الأوامر (Idempotency).</li>
+          <li><strong>المرحلة 3 — التوجيه الذكي للأوامر (SOR &amp; TCA):</strong> محرك <code>smartOrderRouter</code> لتقليل الانزلاق والعمولات وتحليل تكلفة التنفيذ.</li>
+          <li><strong>المرحلة 4 — التدفق المؤسسي والارتباط والأحداث:</strong> رصد التدفقات المؤسسية (<code>institutionalFlow</code>)، حدود الارتباط المتحرك (<code>RollingCorrelation</code>)، ودرع التوقف وقت الأخبار الكبرى (<code>EventBlackoutGuard</code>).</li>
+          <li><strong>المرحلة 5 — التحقق الإحصائي والتحوط:</strong> اختبارات <strong>Monte Carlo</strong> و <strong>Walk-Forward</strong> في الباك-تستر، وحدة التحوط متعدد المنصات (<code>multiVenueHedging</code>)، وحماية أرباح متدرجة <code>1.0R Trailing</code> و <code>1.15R Early Secure (35%)</code>.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>الذكاء الاصطناعي الثنائي والنشر المزدوج على تيليجرام</h3>
+        <ul>
+          <li><strong>Google Gemini + DeepSeek / Qwen:</strong> تقارير كمية، مركز CORTEX للـ ROC-AUC / Half-Kelly، وغرفة تشريح الصفقات (Autopsy Room).</li>
+          <li><strong>البوت التفاعلي الخاص + القناة الرسمية:</strong> إشعارات وأوامر تحكم كاملة (<code>/status</code>، <code>/positions</code>، <code>/balance</code>، <code>/scanner</code>، <code>/signals</code>، <code>/start_bot</code>، <code>/stop_bot</code>) مع نشر شفاف لنتائج المحاكاة الورقية على القناة.</li>
+        </ul>
+      </div>
+
+      <h2 id="sec-prereq">4. متطلبات السيرفر (VPS Prerequisites)</h2>
+      <ul>
+        <li><strong>نظام التشغيل:</strong> Debian 12 (Bookworm) أو Ubuntu 22.04 / 24.04 LTS.</li>
+        <li><strong>المواصفات الأدنى:</strong> 2 vCPU، 2 GB RAM، 15 GB SSD.</li>
+        <li><strong>قاعدة البيانات:</strong> PostgreSQL 16+.</li>
+        <li><strong>المنافذ المطلوبة:</strong> Port 22 (SSH), Port 80 (HTTP), Port 443 (HTTPS).</li>
+      </ul>
+
+      <h2 id="sec-install">5. خطوات التنصيب الكاملة على سيرفر Ubuntu / Debian VPS</h2>
+
+      <h3>الخطوة 1: تحديث الحزم وتثبيت الأدوات الأساسية وقاعدة البيانات</h3>
+      <pre><code>sudo apt update && sudo apt upgrade -y
+sudo apt install -y curl wget git build-essential ufw unzip nginx certbot python3-certbot-nginx postgresql postgresql-contrib</code></pre>
+
+      <h3>الخطوة 2: إعداد قاعدة البيانات PostgreSQL</h3>
+      <pre><code># 1. الدخول إلى بيئة postgres
+sudo -u postgres psql
+
+# 2. إنشاء قاعدة البيانات
+CREATE DATABASE quantura;
+
+# 3. إنشاء مستخدم مخصص (استبدل 'your_password' بكلمة مرور قوية)
+CREATE USER quantura_user WITH ENCRYPTED PASSWORD 'your_password';
+
+# 4. منح الصلاحيات الكاملة
+GRANT ALL PRIVILEGES ON DATABASE quantura TO quantura_user;
+\c quantura
+GRANT ALL ON SCHEMA public TO quantura_user;
+
+# 5. الخروج من psql
+\q</code></pre>
+
+      <h3>الخطوة 3: تثبيت Node.js (الإصدار v22 LTS) و PM2</h3>
+      <pre><code>curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
+sudo npm install -g pm2
+node -v
+npm -v</code></pre>
+
+      <h3>الخطوة 4: جلب المشروع من GitHub العام أو فك ضغط النسخة المحمية</h3>
+      <pre><code>sudo mkdir -p /var/www/quantura
+sudo chown -R $USER:$USER /var/www/quantura
+
+# الطريقة أ: السحب من مستودع GitHub العام
+git clone https://github.com/your-org/quantura.git /var/www/quantura
+cd /var/www/quantura
+
+# الطريقة ب: فك ضغط حزمة البيع المحمية (release-protected.zip)
+unzip quantura-protected-release.zip
+ls -la</code></pre>
+
+      <h3>الخطوة 5: إعداد ملف المتغيرات البيئية (<code>.env</code>)</h3>
+      <pre><code>cp .env.example .env
+nano .env</code></pre>
+      <p>قم بضبط رابط قاعدة البيانات والرموز السرية وإعدادات الترخيص:</p>
+      <pre><code>DATABASE_URL="postgresql://quantura_user:your_strong_password@localhost:5432/quantura"
+PORT=3000
+SESSION_SECRET="your_64_char_session_secret"
+JWT_SECRET="your_jwt_secret_key"
+ENCRYPTION_KEY="your_32_character_encryption_key"
+ADMIN_USERNAME="admin"
+ADMIN_PASSWORD="set_your_strong_password"
+ADMIN_EMAIL="admin@yourdomain.com"
+QUANTURA_LICENSE_KEY="YOUR_VALID_LICENSE_KEY"
+LICENSE_SERVER_URL="https://quanturalicense.myvnc.com"
+LICENSE_PUBLIC_KEY=""
+STRICT_LICENSE_SIGNATURE="false"
+QUANTURA_COMMERCIAL_BUILD="true"
+GEMINI_API_KEY="your_gemini_api_key_here"</code></pre>
+
+      <h3>الخطوة 6: تثبيت المكتبات، بناء المشروع ومزامنة قاعدة البيانات</h3>
+      <pre><code># في حال التنصيب من المستودع العام (الطريقة أ):
+npm install
+npx prisma generate
+npx prisma migrate deploy
+npm run build
+
+# في حال التنصيب من الحزمة الجاهزة release-protected (الطريقة ب — بدون build):
+npm install --omit=dev
+npx prisma generate
+npx prisma migrate deploy</code></pre>
+
+      <h3>الخطوة 7: تشغيل البوت عبر PM2 (24/7 Background Process)</h3>
+      <pre><code>pm2 start npm --name "quantura" -- start
+pm2 save
+pm2 startup
+pm2 status</code></pre>
+
+      <h2 id="sec-nginx">6. إعداد السيرفر العكسي Nginx وشهادة الأمان (SSL)</h2>
+
+      <h3>أ) إنشاء ملف التكوين في Nginx:</h3>
+      <pre><code>sudo nano /etc/nginx/sites-available/quantura</code></pre>
+      <p>ضع التكوين التالي (استبدل <code>your-domain.com</code> بدومينك الحقيقي):</p>
+      <pre><code>server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+
+        # دعم الـ WebSocket للبث المباشر للشموع
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_read_timeout 86400s;
+        proxy_send_timeout 86400s;
+    }
+}</code></pre>
+
+      <h3>ب) تفعيل الموقع وإصدار شهادة SSL:</h3>
+      <pre><code>sudo ln -s /etc/nginx/sites-available/quantura /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl reload nginx
+sudo certbot --nginx -d your-domain.com</code></pre>
+
+      <h3>ج) تفعيل الجدار الناري (UFW):</h3>
+      <pre><code>sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable</code></pre>
+
+      <h2 id="sec-2fa">7. نظام الخادم الخاص والمصادقة الثنائية الذكية (Smart Adaptive 2FA)</h2>
+
+      <div class="security-box">
+        <strong style="color: var(--amber);">حماية السيرفر الخاص ومنع التسجيل العام:</strong><br>
+        تفتح صفحة تسجيل الدخول فوراً بدون تأخير وهي مخصصة لمالك السيرفر فقط (تم إلغاء إنشاء الحسابات العامة في الواجهة ومنعه برمجياً بـ 403 على الخادم). كما تطبق المنصة حظراً زمنياً تلقائياً عند تكرار المحاولات الخاطئة وتوقيع الجلسات بـ <code>HMAC-SHA256</code>.
+      </div>
+
+      <h3>خطوات تفعيل وإدارة Smart 2FA خطوة بخطوة:</h3>
+      <ol>
+        <li><strong>الدخول الأول للمالك:</strong> افتح رابط منصتك <code>https://your-domain.com</code> وسجّل الدخول بالبيانات المضبوطة في ملف <code>.env</code>. عند استخدام كلمة مرور أولية سيُطلب منك استبدالها فوراً بكلمة قوية.</li>
+        <li><strong>ربط تطبيق المصادقة (QR + TOTP):</strong> امسح رمز QR عبر <strong>Google Authenticator</strong> أو <strong>Authy</strong> من نافذة التفعيل التلقائي أو من <strong>الإعدادات → الأمان و 2FA</strong>، ثم أدخل 6 أرقام لتفعيل التحقق من السيرفر.</li>
+        <li><strong>حفظ رموز الطوارئ الـ 8 (One-Time Recovery Codes):</strong> عند التفعيل يُصدر السيرفر 8 رموز بصيغة <code>QNT-XXXX-XXXX</code> مشفّرة بـ SHA-256 للاستخدام لمرة واحدة في حال فقدان الهاتف.</li>
+        <li><strong>شاشة التحقق الذكية بـ 6 خانات:</strong> عند الدخول تدعم الشاشة اللصق المباشر والإرسال التلقائي عند الرقم السادس، مع التبديل بين رمز التطبيق، أو رمز PIN البديل المكون من 6 أرقام (مشفّر بـ PBKDF2)، أو رمز الطوارئ.</li>
+        <li><strong>الوثوق التكيفي بالجهاز (30 يوماً) مقابل الوضع الصارم:</strong> يمكنك تحديد خيار <em>الوثوق بهذا الجهاز لمدة 30 يوماً</em> أو تفعيل <strong>الوضع الصارم الدائم (Strict 2FA)</strong> من الإعدادات لفرض التحقق عند كل دخول وسحب ثقة أي جهاز بنقرة واحدة.</li>
+      </ol>
+
+      <h2 id="sec-licensing">8. نظام التراخيص، التوقيع الرقمي Ed25519 والنسخ المحمية</h2>
+      <div class="card">
+        <h3>التوزيع المفتوح مع بيع التراخيص + بناء الحزم المحمية</h3>
+        <ul>
+          <li><strong>التحقق عبر سيرفر التراخيص (<code>LICENSE_SERVER_URL</code>):</strong> عند ضبط <code>QUANTURA_COMMERCIAL_BUILD=true</code> (أو استخدام <code>release-protected/</code>) يُلغى أي مفتاح تجريبي افتراضي، ويبدأ التطبيق بحالة <code>UNLICENSED</code> حتى إدخال ترخيص صالح مربوط ببصمة السيرفر (<code>HWID</code>).</li>
+          <li><strong>توليد مفاتيح <code>Ed25519</code> (<code>npm run license:keygen</code>):</strong> ينشئ المفتاح الخاص <code>keys/license_private.pem</code> (يُحفظ حصراً في سيرفر التراخيص لتوقيع الردود) والمفتاح العام <code>keys/license_public.pem</code> للتحقق داخل التطبيق.</li>
+          <li><strong>شهادات محلية مختومة ببصمة الجهاز:</strong> يُختم ملف <code>.quantura_certificate.json</code> بـ <code>HWID</code> وفترة سماح أقصاها 72 ساعة عند انقطاع السيرفر مؤقتاً، مع رفض فوري لأي رفض صريح من السيرفر أو تلاعب بالملف.</li>
+          <li><strong>بناء النسخة المشوّشة الخالية من المصدر:</strong> نفّذ <code>npm run build:dist-protected</code> (أو أضف <code>-- --strict-signature</code> لرفض أي رد غير موقّع رقمياً) لتوليد مجلد <code>release-protected/</code> الجاهز للتوزيع المباشر.</li>
+        </ul>
+      </div>
+
+      <h2 id="sec-maintenance">9. أوامر الصيانة والاختبارات والتأكد من السيرفر</h2>
+      <pre><code># عرض سجلات التداول المباشرة والأخطاء
+pm2 logs quantura
+
+# توليد حزمة توزيع محمية خالية من ملفات المصدر ومشوّشة
+npm run build:dist-protected
+
+# إعادة بناء الواجهة والخادم بعد أي تحديث وإعادة التشغيل
+npm run build && pm2 restart quantura
+
+# تشغيل اختبارات النظام (المحرك التداولي + أمان التراخيص + المصادقة الذكية + الترقيات المؤسسية)
+npm test && npx tsx --test tests/licenseSecurity.test.ts src/utils/privateAuth2FA.test.ts src/utils/institutionalUpgrades.test.ts
+
+# فحص حالة قاعدة البيانات والتأكد من الاتصال
+curl -s http://localhost:3000/api/db/status</code></pre>
+
+      <h2 id="sec-support">10. قنوات الدعم الفني والتراخيص المباشرة</h2>
+      <p>في حال الحاجة إلى مساعدة في التنصيب على VPS، إعداد Binance API (Spot / Futures · Testnet / Live)، أو ترقية الترخيص وإعادة تعيين HWID:</p>
+      <ul>
+        <li><strong>البريد الإلكتروني:</strong> <a href="mailto:jawman27227@gmail.com" style="color:#22d3ee;">jawman27227@gmail.com</a></li>
+        <li><strong>واتساب (WhatsApp):</strong> <a href="https://wa.me/212660323113" target="_blank" rel="noopener noreferrer" style="color:#34d399;" dir="ltr">+212660323113</a></li>
+        <li><strong>تيليجرام (Telegram):</strong> <a href="https://t.me/+212660323113" target="_blank" rel="noopener noreferrer" style="color:#22d3ee;" dir="ltr">+212660323113</a></li>
+      </ul>
+
+      <div class="footer">
+        منصة كوانتورا (Quantura™ v2.5.0) — دليل التداول الكمي المؤسسي. جميع الحقوق محفوظة © 2026 · jawman27227@gmail.com · +212660323113
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('#arSidebarNav a[href^="#"]'));
+      var mobileJump = document.getElementById('mobileArNav');
+
+      function setActive(hash) {
+        links.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === hash);
+        });
+        if (mobileJump && mobileJump.value !== hash) {
+          mobileJump.value = hash;
+        }
+      }
+
+      links.forEach(function (a) {
+        a.addEventListener('click', function () {
+          setActive(a.getAttribute('href'));
+        });
+      });
+
+      if (mobileJump) {
+        mobileJump.addEventListener('change', function () {
+          var targetId = mobileJump.value;
+          var targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', targetId);
+            setActive(targetId);
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
